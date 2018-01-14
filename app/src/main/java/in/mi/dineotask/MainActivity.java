@@ -13,7 +13,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate( savedInstanceState );
         setContentView( R.layout.activity_main );
 
-        android.support.v4.app.FragmentManager fragmentManager = getSupportFragmentManager();
-        fragmentManager.beginTransaction().add( R.id.container,new PostsFragment()).commit();
+        getSupportFragmentManager().beginTransaction()
+                .replace( R.id.container,new PostsFragment()).commit();
     }
 }

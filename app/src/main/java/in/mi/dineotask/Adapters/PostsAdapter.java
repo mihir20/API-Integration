@@ -1,6 +1,7 @@
 package in.mi.dineotask.Adapters;
 
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,9 +19,11 @@ import in.mi.dineotask.R;
 public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> {
 
     private ArrayList<Posts> posts;
+    private ItemClickListener mClicklistener;
 
-    public PostsAdapter(ArrayList<Posts> posts){
+    public PostsAdapter(ArrayList<Posts> posts,ItemClickListener mClicklistener){
         this.posts = posts;
+        this.mClicklistener = mClicklistener;
     }
 
     @Override
@@ -42,12 +45,26 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
     }
 
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         private TextView titleText, bodyText;
         public ViewHolder(View itemView) {
             super( itemView );
             titleText = itemView.findViewById( R.id.postTitle );
             bodyText = itemView.findViewById( R.id.postBody );
+            itemView.setOnClickListener( this );
         }
+
+        @Override
+        public void onClick(View v) {
+            if(mClicklistener!=null){
+                mClicklistener.onItemClick( v,getAdapterPosition() );
+            }
+            Log.e( "LISTENER IS NULL","####" );
+        }
+    }
+
+//parent fragment will implement this method to handle click events
+    public interface ItemClickListener{
+        void onItemClick(View view,int position);
     }
 }

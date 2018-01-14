@@ -3,6 +3,7 @@ package in.mi.dineotask.Fragments;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -28,7 +29,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class PostsFragment extends Fragment {
+public class PostsFragment extends Fragment implements PostsAdapter.ItemClickListener {
 
 
     private RecyclerView recyclerView;
@@ -45,12 +46,12 @@ public class PostsFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View rootView= inflater.inflate( R.layout.fragment_posts, container, false );
-
         //initializing views
         recyclerView = rootView.findViewById( R.id.postList );
         recyclerView.setHasFixedSize( true );
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager( getActivity().getApplicationContext() );
         recyclerView.setLayoutManager( layoutManager );
+
 
         //loading JSON
         Retrofit retrofit = new Retrofit.Builder()
@@ -60,13 +61,12 @@ public class PostsFragment extends Fragment {
         PostRequestInterface postRequestInterface = retrofit.create( PostRequestInterface.class );
         Call<Posts[]> call = postRequestInterface.getJSON();
 
-        call.enqueue( new Callback<Posts[]>() {
+        call.enqueue( new Callback<Posts[]>()  {
             @Override
             public void onResponse(Call<Posts[]> call, Response<Posts[]> response) {
                 Posts[] posts = response.body();
                 postsArrayList = new ArrayList<>( Arrays.asList(posts) );
-                postsAdapter = new PostsAdapter( postsArrayList );
-                recyclerView.setAdapter( postsAdapter );
+                showList();
             }
 
             @Override
@@ -75,9 +75,22 @@ public class PostsFragment extends Fragment {
             }
         } );
 
+
         return rootView;
     }
 
+    //shows list of posts
+    public void showList(){
+        //setting array adapter to array list
+        if(postsArrayList!=null){
+            postsAdapter = new PostsAdapter( postsArrayList,this);
+            recyclerView.setAdapter( postsAdapter );
+        }
+    }
 
-
+    @Override
+    public void onItemClick(View view, int position) {
+       getFragmentManager().beginTransaction()
+                .replace(R.id.container,new CommentsFragment()).commit();
+    }
 }
