@@ -57,7 +57,9 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
         @Override
         public void onClick(View v) {
             if(mClicklistener!=null){
-                mClicklistener.onItemClick( v,getAdapterPosition() );
+                mClicklistener.onItemClick( v,
+                        getAdapterPosition(),
+                        posts.get(getAdapterPosition()).getId());
             }
             Log.e( "LISTENER IS NULL","####" );
         }
@@ -65,6 +67,6 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
 
 //parent fragment will implement this method to handle click events
     public interface ItemClickListener{
-        void onItemClick(View view,int position);
+        void onItemClick(View view,int position, int postID);
     }
 }

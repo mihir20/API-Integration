@@ -79,7 +79,7 @@ public class PostsFragment extends Fragment implements PostsAdapter.ItemClickLis
         return rootView;
     }
 
-    //shows list of posts
+
     public void showList(){
         //setting array adapter to array list
         if(postsArrayList!=null){
@@ -89,8 +89,15 @@ public class PostsFragment extends Fragment implements PostsAdapter.ItemClickLis
     }
 
     @Override
-    public void onItemClick(View view, int position) {
-       getFragmentManager().beginTransaction()
-                .replace(R.id.container,new CommentsFragment()).commit();
+    public void onItemClick(View view, int position, int postID) {
+
+        CommentsFragment commentsFragment = new CommentsFragment();
+        Bundle b = new Bundle( );
+        b.putInt( "ID",postID );
+        commentsFragment.setArguments( b );
+
+        getFragmentManager().beginTransaction()
+                .replace(R.id.container,commentsFragment).commit();
+
     }
 }
