@@ -1,20 +1,31 @@
 package in.mi.dineotask.Classes;
 
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
+
 /**
  * Created by mi on 14/1/18.
  */
 
 public class Posts {
-    private int userId;
-    private int id;
+    @SerializedName("userId")
+    @Expose
+    private Integer userId;
+    @SerializedName("id")
+    @Expose
+    private Integer id;
+    @SerializedName("title")
+    @Expose
     private String title;
+    @SerializedName("body")
+    @Expose
     private String body;
 
-    public int getUserId() {
+    public Integer getUserId() {
         return userId;
     }
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
